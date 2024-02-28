@@ -5,15 +5,28 @@
 </head>
 <body>
     <h1>Orario Attuale: <span id="time">Caricamento...</span></h1>
+    <h1>Numero Casuale: <span id="random">Caricamento...</span></h1>
+    <button id="subscribeTime">Iscriviti agli Aggiornamenti dell'Orario</button>
+    <button id="subscribeRandom">Iscriviti ai Numeri Casuali</button>
 
     <script>
-        var ws = new WebSocket("ws://172.27.187.216:8080/websocket");
+        var ws = new WebSocket("ws://192.168.1.6:8080/websocket");
         ws.onopen = function() {
             console.log("Connessione aperta");
+            setInterval(function() {
+                ws.send("ping");
+            }, 30000);
         };
         ws.onmessage = function(event) {
             var data = JSON.parse(event.data);
-            document.getElementById("time").textContent = data.time;
+            // if (event.data !== "pong") {
+                console.log("Messaggio ricevuto: ", data);
+                if(data.time) {
+                    document.getElementById("time").textContent = data.time;
+                } else if(data.random) {
+                    document.getElementById("random").textContent = data.random;
+                }
+            // }
         };
         ws.onclose = function() {
             console.log("Connessione chiusa");
@@ -21,7 +34,14 @@
         ws.onerror = function(error) {
             console.log("Errore: ", error);
         };
+
+        document.getElementById("subscribeTime").addEventListener("click", function() {
+            ws.send("subscribe_time");
+        });
+
+        document.getElementById("subscribeRandom").addEventListener("click", function() {
+            ws.send("subscribe_random");
+        });
     </script>
 </body>
 </html>
-
