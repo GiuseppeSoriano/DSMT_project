@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Time Update</title>
+</head>
+<body>
+    <h1>Orario Attuale: <span id="time">Caricamento...</span></h1>
+
+    <script>
+        var ws = new WebSocket("ws://172.27.187.216:8080/websocket");
+        ws.onopen = function() {
+            console.log("Connessione aperta");
+        };
+        ws.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            document.getElementById("time").textContent = data.time;
+        };
+        ws.onclose = function() {
+            console.log("Connessione chiusa");
+        };
+        ws.onerror = function(error) {
+            console.log("Errore: ", error);
+        };
+    </script>
+</body>
+</html>
+

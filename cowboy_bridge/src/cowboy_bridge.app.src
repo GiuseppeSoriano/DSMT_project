@@ -1,0 +1,22 @@
+{application, cowboy_bridge,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {cowboy_bridge_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    cowboy,
+    ranch
+   ]},
+  {env,[]},
+  {modules, [
+      cowboy_bridge_app,
+      cowboy_bridge_sup,
+      message_receiver,
+      my_http_handler
+     ]},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
