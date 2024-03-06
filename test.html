@@ -6,11 +6,14 @@
 <body>
     <h1>Orario Attuale: <span id="time">Caricamento...</span></h1>
     <h1>Numero Casuale: <span id="random">Caricamento...</span></h1>
-    <button id="subscribeTime">Iscriviti agli Aggiornamenti dell'Orario</button>
-    <button id="subscribeRandom">Iscriviti ai Numeri Casuali</button>
+    <button id="toggleTime">Iscriviti agli Aggiornamenti dell'Orario</button>
+    <button id="toggleRandom">Iscriviti ai Numeri Casuali</button>
 
     <script>
         var ws = new WebSocket("ws://192.168.1.6:8080/websocket");
+        var subscribedTime = false;
+        var subscribedRandom = false;
+
         ws.onopen = function() {
             console.log("Connessione aperta");
             setInterval(function() {
@@ -19,14 +22,12 @@
         };
         ws.onmessage = function(event) {
             var data = JSON.parse(event.data);
-            // if (event.data !== "pong") {
-                console.log("Messaggio ricevuto: ", data);
-                if(data.time) {
-                    document.getElementById("time").textContent = data.time;
-                } else if(data.random) {
-                    document.getElementById("random").textContent = data.random;
-                }
-            // }
+            console.log("Messaggio ricevuto: ", data);
+            if(data.time) {
+                document.getElementById("time").textContent = data.time;
+            } else if(data.random) {
+                document.getElementById("random").textContent = data.random;
+            }
         };
         ws.onclose = function() {
             console.log("Connessione chiusa");
@@ -35,12 +36,26 @@
             console.log("Errore: ", error);
         };
 
-        document.getElementById("subscribeTime").addEventListener("click", function() {
-            ws.send("subscribe_time");
+        document.getElementById("toggleTime").addEventListener("click", function() {
+            if(subscribedTime) {
+                ws.send("unsubscribe_time");
+                this.textContent = "Iscriviti agli Aggiornamenti dell'Orario";
+            } else {
+                ws.send("subscribe_time");
+                this.textContent = "Disiscriviti dagli Aggiornamenti dell'Orario";
+            }
+            subscribedTime = !subscribedTime;
         });
 
-        document.getElementById("subscribeRandom").addEventListener("click", function() {
-            ws.send("subscribe_random");
+        document.getElementById("toggleRandom").addEventListener("click", function() {
+            if(subscribedRandom) {
+                ws.send("unsubscribe_random");
+                this.textContent = "Iscriviti ai Numeri Casuali";
+            } else {
+                ws.send("subscribe_random");
+                this.textContent = "Disiscriviti dai Numeri Casuali";
+            }
+            subscribedRandom = !subscribedRandom;
         });
     </script>
 </body>

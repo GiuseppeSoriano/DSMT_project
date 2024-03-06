@@ -23,7 +23,13 @@ websocket_handle({text, Msg}, State) ->
             {ok, maps:put(subscribe_time, true, State)};
         <<"subscribe_random">> ->
             io:format("Subscribed to random number updates~n"),
-            {ok, maps:put(subscribe_random, true, State)}
+            {ok, maps:put(subscribe_random, true, State)};
+        <<"unsubscribe_time">> ->
+            io:format("Unsubscribed from time updates~n"),
+            {ok, maps:put(subscribe_time, false, State)};
+        <<"unsubscribe_random">> ->
+            io:format("Unsubscribed from random number updates~n"),
+            {ok, maps:put(subscribe_random, false, State)}
     end;
 websocket_handle(_, State) -> 
     {ok, State}.

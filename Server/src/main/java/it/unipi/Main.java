@@ -12,9 +12,9 @@ public class Main {
             msg[0] = new OtpErlangAtom("java_sender");
             msg[1] = new OtpErlangString("Ciao, come stai?");
             OtpErlangTuple tuple = new OtpErlangTuple(msg);
-
+            System.out.println("Messaggio da inviare: " + tuple);
             // Assicurati di inviare il messaggio al nodo Erlang corretto
-            mbox.send("message_receiver", "cowboy_bridge@172.27.187.216", tuple);
+            mbox.send("message_receiver", "cowboy_bridge@192.168.1.6", tuple);
             System.out.println("Messaggio inviato al nodo Erlang.");
         } catch (Exception e) {
             e.printStackTrace();
