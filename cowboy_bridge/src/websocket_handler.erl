@@ -34,7 +34,7 @@ websocket_handle({text, Msg}, State) ->
 websocket_handle(_, State) -> 
     {ok, State}.
 
-websocket_info(tick, State) -> % Gestisci il tick del timer centralizzato
+websocket_info(tick, State) ->
     {FramesTime, State1} = case maps:get(subscribe_time, State, false) of
         true -> send_current_time(State);
         false -> {[], State}
@@ -43,10 +43,12 @@ websocket_info(tick, State) -> % Gestisci il tick del timer centralizzato
         true -> send_random_number(State1);
         false -> {[], State1}
     end,
-    erlang:send_after(1000, self(), tick), % Riavvia il timer centralizzato
-    {FramesTime ++ FramesRandom, State2}; % Invia tutti i frame accumulati
+    {FrameMessage, State3} = send_message_to_all(State2),
+    erlang:send_after(1000, self(), tick),
+    {FramesTime ++ FramesRandom ++ FrameMessage, State3}; % Invia tutti i frame accumulati
 websocket_info(_Info, State) ->
     {ok, State}.
+
 
 send_current_time(State) ->
     {{Year, Month, Day}, {Hour, Minute, Second}} = calendar:local_time(),
@@ -60,6 +62,13 @@ send_random_number(State) ->
     RandomNum = rand:uniform(100), % Genera un numero casuale tra 1 e 100
     Msg = jsx:encode(#{<<"random">> => RandomNum}),
     {[{text, Msg}], State}.
+
+send_message_to_all(State) ->
+    %% Supponiamo che l'ultimo messaggio sia memorizzato nella chiave last_message
+    LastMessage = maps:get(last_message, State, <<"No message">>),
+    Msg = jsx:encode(#{<<"message">> => LastMessage}),
+    {[{text, Msg}], State}.
+
 
 terminate(_Reason, _Req, _State) ->
     % Qui possiamo gestire la terminazione della connessione, per ora semplicemente logghiamo.
