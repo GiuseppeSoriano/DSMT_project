@@ -1,5 +1,3 @@
-%% RECEIVES MESSAGE FROM THE SERVER
-
 -module(message_receiver).
 -export([start/0, loop/0, status/0]).
 
@@ -16,7 +14,9 @@ status() ->
 
 loop() ->
     receive
-        {From, Message} ->
-            io:format("Messaggio ricevuto da ~p: ~p~n", [From, Message]),
+        {From, StockInfo} ->
+            io:format("Messaggio ricevuto da ~p: ~p~n", [From, StockInfo]),
+            %% Inoltra a internal_comm_manager
+            internal_comm_manager:handle_stock_info(StockInfo),
             loop()
     end.

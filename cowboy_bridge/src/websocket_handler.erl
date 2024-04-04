@@ -4,6 +4,7 @@
 
 init(Req, _Opts) ->
     % erlang:send_after(1000, self(), tick), % Avvia un timer centralizzato
+    register(websocket_handler, self()),
     {cowboy_websocket, Req, #{}}.
 
 websocket_init(State) ->
@@ -29,7 +30,13 @@ websocket_handle({text, Msg}, State) ->
             {ok, maps:put(subscribe_time, false, State)};
         <<"unsubscribe_random">> ->
             io:format("Unsubscribed from random number updates~n"),
-            {ok, maps:put(subscribe_random, false, State)}
+            {ok, maps:put(subscribe_random, false, State)};
+        <<"subscribe_stock">> ->
+            io:format("Subscribed to stock updates~n"),
+            {ok, maps:put(subscribe_stock, true, State)};
+        <<"unsubscribe_stock">> ->
+            io:format("Unsubscribed from stock updates~n"),
+            {ok, maps:put(subscribe_stock, false, State)}
     end;
 websocket_handle(_, State) -> 
     {ok, State}.
@@ -43,9 +50,12 @@ websocket_info(tick, State) ->
         true -> send_random_number(State1);
         false -> {[], State1}
     end,
-    {FrameMessage, State3} = send_message_to_all(State2),
+    {FramesStock, State3} = case maps:get(subscribe_stock, State2, false) of
+        true -> send_stock(State2);
+        false -> {[], State2}
+    end,
     erlang:send_after(1000, self(), tick),
-    {FramesTime ++ FramesRandom ++ FrameMessage, State3}; % Invia tutti i frame accumulati
+    {FramesTime ++ FramesRandom ++ FramesStock, State3}; % Invia tutti i frame accumulati
 websocket_info(_Info, State) ->
     {ok, State}.
 
@@ -63,12 +73,13 @@ send_random_number(State) ->
     Msg = jsx:encode(#{<<"random">> => RandomNum}),
     {[{text, Msg}], State}.
 
-send_message_to_all(State) ->
-    %% Supponiamo che l'ultimo messaggio sia memorizzato nella chiave last_message
-    LastMessage = maps:get(last_message, State, <<"No message">>),
-    Msg = jsx:encode(#{<<"message">> => LastMessage}),
+send_stock(State) ->
+    StockInfo = stock_storage:get_stock("SOME_TICKER"), % Assumi che abbiamo un ticker di esempio
+    %% stampa a video il messaggio ricevuto
+    io:format("Messaggio ricevuto: ~p~n", [StockInfo]),
+    StockBinary = list_to_binary(lists:flatten(StockInfo)),
+    Msg = jsx:encode(#{<<"stock">> => StockBinary}),
     {[{text, Msg}], State}.
-
 
 terminate(_Reason, _Req, _State) ->
     % Qui possiamo gestire la terminazione della connessione, per ora semplicemente logghiamo.

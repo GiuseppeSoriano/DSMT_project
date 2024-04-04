@@ -6,35 +6,40 @@
   <body>
     <h1>Orario Attuale: <span id="time">Caricamento...</span></h1>
     <h1>Numero Casuale: <span id="random">Caricamento...</span></h1>
+    <h1>Prezzo Azione: <span id="stock">Caricamento...</span></h1>
     <button id="toggleTime">Iscriviti agli Aggiornamenti dell'Orario</button>
     <button id="toggleRandom">Iscriviti ai Numeri Casuali</button>
+    <button id="toggleStock">Iscriviti agli Aggiornamenti delle Azioni</button>
 
     <script>
-      var ws = new WebSocket("ws://fedora:8081/websocket");
-      var subscribedTime = false;
-      var subscribedRandom = false;
+        var ws = new WebSocket("ws://192.168.1.56:8080/websocket");
+        var subscribedTime = false;
+        var subscribedRandom = false;
+        var subscribedStock = false;
 
-      ws.onopen = function () {
-        console.log("Connessione aperta");
-        setInterval(function () {
-          ws.send("ping");
-        }, 30000);
-      };
-      ws.onmessage = function (event) {
-        var data = JSON.parse(event.data);
-        console.log("Messaggio ricevuto: ", data);
-        if (data.time) {
-          document.getElementById("time").textContent = data.time;
-        } else if (data.random) {
-          document.getElementById("random").textContent = data.random;
-        }
-      };
-      ws.onclose = function () {
-        console.log("Connessione chiusa");
-      };
-      ws.onerror = function (error) {
-        console.log("Errore: ", error);
-      };
+        ws.onopen = function() {
+            console.log("Connessione aperta");
+            setInterval(function() {
+                ws.send("ping");
+            }, 30000);
+        };
+        ws.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            console.log("Messaggio ricevuto: ", data);
+            if(data.time) {
+                document.getElementById("time").textContent = data.time;
+            } else if(data.random) {
+                document.getElementById("random").textContent = data.random;
+            } else if(data.stock) {
+                document.getElementById("stock").textContent = data.stock;
+            }
+        };
+        ws.onclose = function() {
+            console.log("Connessione chiusa");
+        };
+        ws.onerror = function(error) {
+            console.log("Errore: ", error);
+        };
 
       document
         .getElementById("toggleTime")
@@ -60,6 +65,17 @@
             this.textContent = "Disiscriviti dai Numeri Casuali";
           }
           subscribedRandom = !subscribedRandom;
+        });
+
+        document.getElementById("toggleStock").addEventListener("click", function() {
+            if(subscribedStock) {
+                ws.send("unsubscribe_stock");
+                this.textContent = "Iscriviti agli Aggiornamenti delle Azioni";
+            } else {
+                ws.send("subscribe_stock");
+                this.textContent = "Disiscriviti dagli Aggiornamenti delle Azioni";
+            }
+            subscribedStock = !subscribedStock;
         });
     </script>
   </body>
