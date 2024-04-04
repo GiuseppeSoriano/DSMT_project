@@ -7,6 +7,8 @@
     <groupId>it.unipi</groupId>
     <artifactId>Server</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>Server</name>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -14,11 +16,33 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+<!--        <&#45;&#45;<dependency>-->
+<!--            <groupId>com.ericsson</groupId>-->
+<!--            <artifactId>erlang-jinterface</artifactId>-->
+<!--            <version>1.13.1</version> &lt;!&ndash; 1.14.1 su windows &ndash;&gt;-->
+<!--        </dependency> &ndash;&gt;-->
+
         <dependency>
-            <groupId>com.ericsson</groupId>
-            <artifactId>erlang-jinterface</artifactId>
-            <version>1.13.1</version> <!-- 1.14.1 su windows -->
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>10.0.0</version>
+            <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.ericsson.otp</groupId>
+            <artifactId>erlang</artifactId>
+            <version>1.13.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.glassfish.tyrus</groupId>
+            <artifactId>tyrus-client</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -26,5 +50,16 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>

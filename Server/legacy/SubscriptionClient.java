@@ -13,25 +13,25 @@ import java.lang.String;
 
 public class SubscriptionClient {
 
-    public static void main(String[] args) {
-
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://172.27.187.216:8080/unsubscribe"))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // Stampa il corpo della risposta
-            System.out.println(response.body());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//
+//        try {
+//            HttpClient client = HttpClient.newHttpClient();
+//
+//            HttpRequest request = HttpRequest.newBuilder()
+//                    .uri(URI.create("http://172.27.187.216:8080/unsubscribe"))
+//                    .GET()
+//                    .build();
+//
+//            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//
+//            // Stampa il corpo della risposta
+//            System.out.println(response.body());
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 /*
 public static void main(String[] args) {
     CloseableHttpClient httpClient = HttpClients.createDefault();

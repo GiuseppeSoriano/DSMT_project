@@ -17,7 +17,7 @@ start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 init([]) ->
-    Port = 8080,
+    Port = 8081,
     Routes = [
         {"/websocket", websocket_handler, []}
     ],

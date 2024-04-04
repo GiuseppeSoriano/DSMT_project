@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>WebSocket Time Update</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Orario Attuale: <span id="time">Caricamento...</span></h1>
     <h1>Numero Casuale: <span id="random">Caricamento...</span></h1>
     <button id="toggleTime">Iscriviti agli Aggiornamenti dell'Orario</button>
     <button id="toggleRandom">Iscriviti ai Numeri Casuali</button>
 
     <script>
-        var ws = new WebSocket("ws://192.168.1.6:8080/websocket");
-        var subscribedTime = false;
-        var subscribedRandom = false;
+      var ws = new WebSocket("ws://fedora:8081/websocket");
+      var subscribedTime = false;
+      var subscribedRandom = false;
 
-        ws.onopen = function() {
-            console.log("Connessione aperta");
-            setInterval(function() {
-                ws.send("ping");
-            }, 30000);
-        };
-        ws.onmessage = function(event) {
-            var data = JSON.parse(event.data);
-            console.log("Messaggio ricevuto: ", data);
-            if(data.time) {
-                document.getElementById("time").textContent = data.time;
-            } else if(data.random) {
-                document.getElementById("random").textContent = data.random;
-            }
-        };
-        ws.onclose = function() {
-            console.log("Connessione chiusa");
-        };
-        ws.onerror = function(error) {
-            console.log("Errore: ", error);
-        };
+      ws.onopen = function () {
+        console.log("Connessione aperta");
+        setInterval(function () {
+          ws.send("ping");
+        }, 30000);
+      };
+      ws.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        console.log("Messaggio ricevuto: ", data);
+        if (data.time) {
+          document.getElementById("time").textContent = data.time;
+        } else if (data.random) {
+          document.getElementById("random").textContent = data.random;
+        }
+      };
+      ws.onclose = function () {
+        console.log("Connessione chiusa");
+      };
+      ws.onerror = function (error) {
+        console.log("Errore: ", error);
+      };
 
-        document.getElementById("toggleTime").addEventListener("click", function() {
-            if(subscribedTime) {
-                ws.send("unsubscribe_time");
-                this.textContent = "Iscriviti agli Aggiornamenti dell'Orario";
-            } else {
-                ws.send("subscribe_time");
-                this.textContent = "Disiscriviti dagli Aggiornamenti dell'Orario";
-            }
-            subscribedTime = !subscribedTime;
+      document
+        .getElementById("toggleTime")
+        .addEventListener("click", function () {
+          if (subscribedTime) {
+            ws.send("unsubscribe_time");
+            this.textContent = "Iscriviti agli Aggiornamenti dell'Orario";
+          } else {
+            ws.send("subscribe_time");
+            this.textContent = "Disiscriviti dagli Aggiornamenti dell'Orario";
+          }
+          subscribedTime = !subscribedTime;
         });
 
-        document.getElementById("toggleRandom").addEventListener("click", function() {
-            if(subscribedRandom) {
-                ws.send("unsubscribe_random");
-                this.textContent = "Iscriviti ai Numeri Casuali";
-            } else {
-                ws.send("subscribe_random");
-                this.textContent = "Disiscriviti dai Numeri Casuali";
-            }
-            subscribedRandom = !subscribedRandom;
+      document
+        .getElementById("toggleRandom")
+        .addEventListener("click", function () {
+          if (subscribedRandom) {
+            ws.send("unsubscribe_random");
+            this.textContent = "Iscriviti ai Numeri Casuali";
+          } else {
+            ws.send("subscribe_random");
+            this.textContent = "Disiscriviti dai Numeri Casuali";
+          }
+          subscribedRandom = !subscribedRandom;
         });
     </script>
-</body>
+  </body>
 </html>
