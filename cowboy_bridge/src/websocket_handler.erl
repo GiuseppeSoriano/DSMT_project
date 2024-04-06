@@ -74,12 +74,14 @@ send_random_number(State) ->
     {[{text, Msg}], State}.
 
 send_stock(State) ->
-    StockInfo = stock_storage:get_stock("SOME_TICKER"), % Assumi che abbiamo un ticker di esempio
-    %% stampa a video il messaggio ricevuto
+    StockInfo = stock_storage:get_stock('TSLA'), % Assicurati che la chiave corrisponda al formato salvato
     io:format("Messaggio ricevuto: ~p~n", [StockInfo]),
-    StockBinary = list_to_binary(lists:flatten(StockInfo)),
+    StockString = io_lib:format("~p", [StockInfo]), % Formatta il valore in virgola mobile come stringa
+    StockBinary = list_to_binary(StockString), % Converte la lista di caratteri in binario
     Msg = jsx:encode(#{<<"stock">> => StockBinary}),
     {[{text, Msg}], State}.
+
+
 
 terminate(_Reason, _Req, _State) ->
     % Qui possiamo gestire la terminazione della connessione, per ora semplicemente logghiamo.
