@@ -52,4 +52,15 @@ public class StockExchangeProducer {
     public void generate_AAPL_stock_data() {
         send_data_to_erlang_node(171.48, "AAPL");
     }
+
+    @Schedule(hour = "*", minute = "*", second = "*/4", info = "Every 10 seconds timer")
+    public void generate_BTC_USD_stock_data() {
+        send_data_to_erlang_node(67706.60, "BTC/USD");
+    }
+
+    @Schedule(hour = "*", minute = "*", second = "*/4", info = "Every 10 seconds timer")
+    public void generate_ETH_USD_stock_data() {
+        send_data_to_erlang_node(3333.94, "ETH/USD");
+    }
+
 }
