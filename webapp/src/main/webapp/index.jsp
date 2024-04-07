@@ -65,7 +65,7 @@
                     </div>
                     <div class="column tick">
                         <div class="subtitle is-6">
-                            ETH/USD<span class="price is-pulled-right"
+                            <a href="/stock-details?name=ETH USD">ETH/USD</a><span class="price is-pulled-right"
                         ><strong>3290.36</strong></span
                         >
                             <div class="text-red mt-1">
@@ -77,7 +77,7 @@
                     </div>
                     <div class="column tick">
                         <div class="subtitle is-6">
-                            EUR/USD<span class="price is-pulled-right"
+                            <a href="/stock-details?name=AMAZON INC">AMZ</a><span class="price is-pulled-right"
                         ><strong>1.0758</strong></span
                         >
                             <div class="text-green mt-1">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="column tick">
                         <div class="subtitle is-6">
-                            GBP/USD<span class="price is-pulled-right"
+                            <a href="/stock-details?name=Tesla Inc">TSLA</a><span class="price is-pulled-right"
                         ><strong>1.2557</strong></span
                         >
                             <div class="text-green mt-1">
@@ -101,7 +101,7 @@
                     </div>
                     <div class="column tick">
                         <div class="subtitle is-6">
-                            AAPL<span class="price is-pulled-right"
+                            <a href="/stock-details?name=Apple Inc">AAPL</a><span class="price is-pulled-right"
                         ><strong>169.06</strong></span
                         >
                             <div class="text-red mt-1">
@@ -113,7 +113,7 @@
                     </div>
                     <div class="column tick">
                         <div class="subtitle is-6">
-                            MSFT<span class="price is-pulled-right">
+                            <a href="/stock-details?name=Microsoft Corp">MSFT</a><span class="price is-pulled-right">
                     <strong>420.34</strong></span
                         >
                             <div class="text-red mt-1">
@@ -123,19 +123,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column tick">
-                        <div class="subtitle is-6">
-                            AMZN
-                            <span class="price is-pulled-right"
-                            ><strong>178.92</strong></span
-                            >
-                            <div class="text-red mt-1">
-                    <span class="icon float-left mt-1"
-                    ><i class="fas fa-chevron-down"></i></span
-                    ><span style="font-size: 1.2rem">-0.81%</span> (-1.46)
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
