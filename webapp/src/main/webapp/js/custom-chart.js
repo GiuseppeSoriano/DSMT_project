@@ -14,6 +14,8 @@ anychart.onDocumentReady(function () {
         close: 4
       });
 
+      companyName = document.getElementById("companyName").textContent;
+
       // create stock chart
       var chart = anychart.stock();
 
@@ -24,7 +26,7 @@ anychart.onDocumentReady(function () {
       plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true);
 
       var series = plot.candlestick(mapping)
-        .name('Tesla');
+        .name(companyName);
       series.legendItem().iconType('rising-falling');
 
       // create scroller series with mapped data
@@ -46,7 +48,7 @@ anychart.onDocumentReady(function () {
       rangeSelector.render(chart);
 
       // sets the title of the chart
-      chart.title('Tesla Inc. Stock Chart');
+      chart.title(companyName+'. Stock Chart');
 
       // set container id for the chart
       chart.container('container');
