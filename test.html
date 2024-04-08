@@ -12,7 +12,16 @@
     <button id="toggleStock">Iscriviti agli Aggiornamenti delle Azioni</button>
 
     <script>
-        var ws = new WebSocket("ws://192.168.1.56:8080/websocket");
+        function subscribeToStock(ticker) {
+          const message = JSON.stringify({ type: "subscribe_stock", ticker: ticker });
+          ws.send(message);
+        }
+        function unsubscribeFromStock(ticker) {
+          const message = JSON.stringify({ type: "unsubscribe_stock", ticker: ticker });
+          ws.send(message);
+        }
+        
+        var ws = new WebSocket("ws://192.168.1.6:8081/websocket");
         var subscribedTime = false;
         var subscribedRandom = false;
         var subscribedStock = false;
@@ -69,10 +78,12 @@
 
         document.getElementById("toggleStock").addEventListener("click", function() {
             if(subscribedStock) {
-                ws.send("unsubscribe_stock");
+                //ws.send("unsubscribe_stock");
+                unsubscribeFromStock('AAPL');
                 this.textContent = "Iscriviti agli Aggiornamenti delle Azioni";
             } else {
-                ws.send("subscribe_stock");
+                //ws.send("subscribe_stock");
+                subscribeToStock('AAPL');
                 this.textContent = "Disiscriviti dagli Aggiornamenti delle Azioni";
             }
             subscribedStock = !subscribedStock;

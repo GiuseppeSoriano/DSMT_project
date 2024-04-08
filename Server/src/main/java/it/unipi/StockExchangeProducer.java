@@ -16,7 +16,6 @@ public class StockExchangeProducer {
         double randomFluctuation = Math.random() * fluctuationRange * 2 - fluctuationRange;
         double currentPrice = basePrice + randomFluctuation;
         return currentPrice;
-
     }
 
     private static void send_data_to_erlang_node(double basePrice, String ticker) {
@@ -28,8 +27,10 @@ public class StockExchangeProducer {
         msg[1] = new OtpErlangDouble(price);
         OtpErlangTuple tuple = new OtpErlangTuple(msg);
 
+        System.out.println("Sending message to Erlang node: " + ticker + " " + price);
+
 //            Send message
-        mbox.send("message_receiver", "cowboy_bridge@fedora", tuple);
+        mbox.send("message_receiver", "cowboy_bridge@192.168.1.6", tuple);
         LOGGER.info(String.format("%s: %.2f", ticker, price));
     }
 

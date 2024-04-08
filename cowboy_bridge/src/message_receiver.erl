@@ -15,8 +15,8 @@ status() ->
 loop() ->
     receive
         {From, StockInfo} ->
-            io:format("Messaggio ricevuto da ~p: ~p~n", [From, StockInfo]),
+            %% io:format("Messaggio ricevuto da ~p: ~p~n", [From, StockInfo]),
             %% Inoltra a internal_comm_manager
-            internal_comm_manager:handle_stock_info(StockInfo),
+            internal_comm_manager:handle_stock_info(From, StockInfo),
             loop()
     end.
