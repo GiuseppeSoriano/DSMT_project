@@ -1,17 +1,16 @@
 package it.unipi.DSMT.controller;
 
 import com.google.gson.Gson;
-import it.unipi.DSMT.config.AppServletContextListener;
 import it.unipi.DSMT.model.StockData;
 import it.unipi.DSMT.service.StockService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
@@ -54,7 +53,7 @@ public class StockController extends HttpServlet {
 
         StockData data = parseRequest(request.getReader());
 
-        if(data != null) {
+        if (data != null) {
             logger.info("POST request with data: " + data.getTicker() + " " + data.getPrice() + " " + data.getTimestamp());
         } else {
             logger.error("Error parsing the request");
@@ -75,6 +74,7 @@ public class StockController extends HttpServlet {
             response.getWriter().write("{\"error\": \"Error in savig data\"}");
         }
     }
+
     private StockData parseRequest(BufferedReader reader) {
         Gson gson = new Gson();
 
