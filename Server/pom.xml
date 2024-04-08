@@ -15,13 +15,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>com.ericsson</groupId>
-            <artifactId>erlang-jinterface</artifactId>
-            <version>1.13.1</version>
-        </dependency>
 
+    <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
@@ -29,24 +24,10 @@
             <scope>provided</scope>
         </dependency>
 
-    <!--    <dependency>
+        <dependency>
             <groupId>com.ericsson.otp</groupId>
             <artifactId>erlang</artifactId>
-            <version>1.13.2</version>
-        </dependency> -->
-
-
-        <dependency>
-            <groupId>org.glassfish.tyrus</groupId>
-            <artifactId>tyrus-client</artifactId>
-            <version>2.1.5</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
+            <version>1.13.1</version>
         </dependency>
     </dependencies>
 
