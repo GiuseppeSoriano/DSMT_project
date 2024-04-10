@@ -1,60 +1,62 @@
-anychart.onDocumentReady(function () {
+anychart.onDocumentReady(async function () {
 
-  // Create data table
-  var table = anychart.data.table();
+    // Get company name (assuming it's available)
+    companyName = document.getElementById("companyName").textContent;
 
-  // Add data with formatted dates
-  table.addData([
-          ['2015-12-24', 511.53, 514.98, 505.79, 506.40],
-          ['2015-12-25', 512.53, 514.88, 505.69, 510.34],
-          ['2015-12-26', 511.83, 514.98, 505.59, 507.23],
-          ['2015-12-27', 511.22, 515.30, 505.49, 506.47],
-          ['2015-12-28', 511.53, 514.98, 505.79, 506.40],
-          ['2015-12-29', 512.53, 513.88, 505.69, 510.34],
-          ['2015-12-30', 511.83, 512.98, 502.59, 503.23],
-          ['2015-12-31', 511.22, 515.30, 505.49, 506.47],
-          ['2016-01-01', 510.35, 515.72, 505.23, 508.80]
-  ]);
+    // Create data table
+    var dataTable = anychart.data.table();
 
-  // Map loaded data (adjust column indexes if needed)
-  var mapping = table.mapAs({'open': 1, 'high': 2, 'low': 3, 'close': 4});
+    try {
+        const response = await fetch('/api/stocks-data?ticker=TSLA');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data); // This will log the fetched JSON data
 
-  // Create a stock chart
-  var chart = anychart.stock();
+        // Process fetched data into a format suitable for AnyChart (NEW)
+        dataTable.addData(data.map(item => [item.date, item.open, item.high, item.low, item.close]));
 
-  // Configure the plot (first layer)
-  var plot = chart.plot(0);
-  plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true); // Enable grid lines
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 
-  // Get company name (assuming it's available)
-  companyName = document.getElementById("companyName").textContent;
+    // Map loaded data (adjust column indexes if needed)
+    var mapping = dataTable.mapAs({'open': 1, 'high': 2, 'low': 3, 'close': 4});
 
-  // Create candlestick series with company name
-  var series = plot.candlestick(mapping).name(companyName);
-  series.legendItem().iconType('rising-falling'); // Set legend icon type
+    // Create a stock chart
+    var chart = anychart.stock();
 
-  // Create scroller series with mapped data
-  chart.scroller().candlestick(mapping);
+    // Configure the plot (first layer)
+    var plot = chart.plot(0);
+    plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true); // Enable grid lines
 
-  // Set date range (optional, uncomment if needed)
-  // chart.selectRange('2015-12-24', '2016-01-01');
+    // Create candlestick series with company name
+    var series = plot.candlestick(mapping).name(companyName);
+    series.legendItem().iconType('rising-falling'); // Set legend icon type
 
-  // Create range picker for interactive selection
-  var rangePicker = anychart.ui.rangePicker();
-  rangePicker.render(chart);
+    // Create scroller series with mapped data
+    chart.scroller().candlestick(mapping);
 
-  // Create range selector for additional navigation
-  var rangeSelector = anychart.ui.rangeSelector();
-  rangeSelector.render(chart);
+    // Set date range (optional, uncomment if needed)
+    // chart.selectRange('2015-12-24', '2016-01-01');
 
-  // Set chart title with company name
-  chart.title(companyName + '. Stock Chart');
+    // Create range picker for interactive selection
+    var rangePicker = anychart.ui.rangePicker();
+    rangePicker.render(chart);
 
-  // Set container ID for chart rendering
-  chart.container('container');
+    // Create range selector for additional navigation
+    var rangeSelector = anychart.ui.rangeSelector();
+    rangeSelector.render(chart);
 
-  // Draw the chart
-  chart.draw();
+    // Set chart title with company name
+    chart.title(companyName + '. Stock Chart');
+
+    // Set container ID for chart rendering
+    chart.container('container');
+
+    // Draw the chart
+    chart.draw();
 });
 
 //anychart.onDocumentReady(function () {
