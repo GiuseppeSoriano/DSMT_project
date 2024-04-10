@@ -5,9 +5,9 @@ import java.util.Date;
 public class StockData {
     private String ticker;
     private Double price;
-    private Date timestamp;
+    private Long timestamp;
 
-    public StockData(String ticker, Double price, Date timestamp) {
+    public StockData(String ticker, Double price, Long timestamp) {
         this.ticker = ticker;
         this.price = price;
         this.timestamp = timestamp;
@@ -29,11 +29,11 @@ public class StockData {
         this.price = price;
     }
 
-    public Date getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 }

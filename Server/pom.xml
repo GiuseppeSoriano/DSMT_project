@@ -25,8 +25,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ericsson.otp</groupId>
-            <artifactId>erlang</artifactId>
+            <groupId>com.ericsson</groupId>
+            <artifactId>erlang-jinterface</artifactId>
             <version>1.13.1</version>
         </dependency>
     </dependencies>

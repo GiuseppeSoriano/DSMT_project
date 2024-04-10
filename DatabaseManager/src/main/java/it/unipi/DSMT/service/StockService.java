@@ -1,9 +1,13 @@
 package it.unipi.DSMT.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import it.unipi.DSMT.model.StockData;
 import it.unipi.DSMT.dao.redis.StockDAO;
+import redis.clients.jedis.resps.Tuple;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.*;
 
 public class StockService {
     private final StockDAO stockDAO;
@@ -12,8 +16,24 @@ public class StockService {
         this.stockDAO = new StockDAO();
     }
 
-    public String getStockHistory(String ticker, Date dateString){
-        return stockDAO.getStockHistory(ticker, dateString);
+    public String getStockHistory(String ticker, Long timestamp) throws JsonProcessingException {
+        List<Tuple> resultsWithScores =  stockDAO.getStockHistory(ticker, timestamp);
+
+        List<Map<String, String>> dataList = new ArrayList<>();
+
+        for (Tuple tuple : resultsWithScores) {
+            Map<String, String> dataMap = new LinkedHashMap<>();
+
+            String[] parts = tuple.getElement().split(":");
+            String price = parts[0];
+
+            dataMap.put(String.valueOf((long)tuple.getScore()), price);
+            dataList.add(dataMap);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.writeValueAsString(dataList);
     }
 
     public void saveStockData(StockData data) {

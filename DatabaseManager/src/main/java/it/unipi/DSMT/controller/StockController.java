@@ -13,11 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Date;
 
 @WebServlet(name = "StockController", value = "/stock-api")
 public class StockController extends HttpServlet {
-    private static final Logger logger = LoggerFactory.getLogger(StockController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StockController.class.getName());
     private final StockService stockService;
 
     public StockController() {
@@ -38,13 +37,18 @@ public class StockController extends HttpServlet {
         }
 
         try {
-            Date timestamp = parseDate(dateString);
+            long timestamp = parseDate(dateString);
             String stockHistory = stockService.getStockHistory(ticker, timestamp);
+            if (stockHistory == null) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("{\"message\": \"It works" + " " + ticker + " " + timestamp + " " +"\"}");
+                return;
+            }
             response.setContentType("application/json");
             response.getWriter().write(stockHistory);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Error in loading historic data\"}");
+            response.getWriter().write("{\"error\": \"Error in loading historic data" + " " + ticker + " " + dateString + " " + e.getMessage() + "\"}");
         }
     }
 
@@ -71,7 +75,7 @@ public class StockController extends HttpServlet {
             response.getWriter().write("{\"message\": \"Data correctly saved\"}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Error in savig data\"}");
+            response.getWriter().write("{\"error\": \"Error in saving data\"}");
         }
     }
 
@@ -89,7 +93,7 @@ public class StockController extends HttpServlet {
         }
     }
 
-    private Date parseDate(String dateString) {
-        return new Date(Long.getLong(dateString));
+    private long parseDate(String dateString) {
+        return Long.parseLong(dateString);
     }
 }

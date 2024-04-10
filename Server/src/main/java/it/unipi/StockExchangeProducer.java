@@ -1,6 +1,7 @@
 package it.unipi;
 
 import com.ericsson.otp.erlang.*;
+
 import jakarta.ejb.Schedule;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
