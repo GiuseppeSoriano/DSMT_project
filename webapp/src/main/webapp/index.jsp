@@ -156,5 +156,8 @@
     </div>
 </section>
 </div>
+
+<script src="js/websocket-handler.js"></script>
+
 </body>
 </html>
