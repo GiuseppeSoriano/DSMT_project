@@ -24,7 +24,7 @@
                     <div class="columns is-mobile">
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=BTC USD">BTC/USD</a>
+                                <a href="/stock-details?name=BTC USD&ticker=BTC/USD">BTC/USD</a>
                                 <span class="price is-pulled-right"
                                 ><strong>65112</strong></span>
     <%--                            <div class="text-red mt-1">--%>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=ETH USD">ETH/USD</a><span class="price is-pulled-right"
+                                <a href="/stock-details?name=ETH USD&ticker=ETH/USD">ETH/USD</a><span class="price is-pulled-right"
                             ><strong>3290.36</strong></span>
     <%--                            <div class="text-red mt-1">--%>
     <%--                    <span class="icon float-left mt-1"--%>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=AMAZON INC">AMZ</a><span class="price is-pulled-right"
+                                <a href="/stock-details?name=AMAZON INC&ticker=AMZN">AMZN</a><span class="price is-pulled-right"
                             ><strong>1.0758</strong></span>
     <%--                            <div class="text-green mt-1">--%>
     <%--                    <span class="icon float-left mt-1"--%>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=Tesla Inc">TSLA</a><span class="price is-pulled-right"
+                                <a href="/stock-details?name=Tesla Inc&ticker=TSLA">TSLA</a><span class="price is-pulled-right"
                             ><strong>1.2557</strong></span>
     <%--                            <div class="text-green mt-1">--%>
     <%--                    <span class="icon float-left mt-1"--%>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=Apple Inc">AAPL</a><span class="price is-pulled-right"
+                                <a href="/stock-details?name=Apple Inc&ticker=AAPL">AAPL</a><span class="price is-pulled-right"
                             ><strong>169.06</strong></span>
     <%--                            <div class="text-red mt-1">--%>
     <%--                    <span class="icon float-left mt-1"--%>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="column tick">
                             <div class="subtitle is-6">
-                                <a href="/stock-details?name=Microsoft Corp">MSFT</a><span class="price is-pulled-right">
+                                <a href="/stock-details?name=Microsoft Corp&ticker=MSFT">MSFT</a><span class="price is-pulled-right">
                         <strong>420.34</strong></span>
     <%--                            <div class="text-red mt-1">--%>
     <%--                    <span class="icon float-left mt-1"--%>

@@ -2,12 +2,13 @@ anychart.onDocumentReady(async function () {
 
     // Get company name (assuming it's available)
     companyName = document.getElementById("companyName").textContent;
+    tickerSymbol = document.getElementById("tickerSymbol").textContent;
 
     // Create data table
     var dataTable = anychart.data.table();
 
     try {
-        const response = await fetch('/api/stocks-data?ticker=TSLA');
+        const response = await fetch('/api/stocks-data?ticker='+tickerSymbol);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -16,7 +17,6 @@ anychart.onDocumentReady(async function () {
 
         // Process fetched data into a format suitable for AnyChart (NEW)
         dataTable.addData(data.map(item => [item.date, item.open, item.high, item.low, item.close]));
-
     } catch (error) {
         console.error('Error fetching data:', error);
     }

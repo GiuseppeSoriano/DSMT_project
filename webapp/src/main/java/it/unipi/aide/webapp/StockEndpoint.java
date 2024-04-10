@@ -15,9 +15,12 @@ public class StockEndpoint extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<StockData> data = StockData.getData(); // Get stock data
         // Set content type to JSON
         response.setContentType("application/json");
+
+        String tickerSymbol = request.getParameter("ticker");
+
+        List<StockData> data = StockData.getData(tickerSymbol); // Get stock data
 
         // Get print writer
         PrintWriter out = response.getWriter();

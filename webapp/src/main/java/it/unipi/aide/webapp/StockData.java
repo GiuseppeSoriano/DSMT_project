@@ -19,7 +19,7 @@ public class StockData {
     }
 
 
-    public static List<StockData> getData() {
+    public static List<StockData> getData(String tickerSymbol) {
         List<StockData> data = new ArrayList<>();
         data.add(new StockData("2015-12-24", 511.53, 514.98, 505.79, 506.40));
         data.add(new StockData("2015-12-25", 512.53, 514.88, 505.69, 510.34));
