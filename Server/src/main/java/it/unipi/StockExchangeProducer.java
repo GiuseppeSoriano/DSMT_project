@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 public class StockExchangeProducer {
     private static final Logger LOGGER = Logger.getLogger(StockExchangeProducer.class.getName());
 
-//    private static final String ERLAN_NODE="cowboy_bridge@192.168.1.6";
-    private static final String ERLAN_NODE="cowboy_bridge@fedora";
+    private static final String ERLANG_NODE="cowboy_bridge@192.168.1.6";
+//    private static final String ERLANG_NODE = "cowboy_bridge@fedora";
 
     private static double generateStockData(double basePrice, double fluctuationRange) {
         double randomFluctuation = Math.random() * fluctuationRange * 2 - fluctuationRange;
@@ -25,16 +25,18 @@ public class StockExchangeProducer {
     private static void send_data_to_erlang_node(double basePrice, String ticker) {
         double price = generateStockData(basePrice, 5);
         OtpMbox mbox = ErlangMailBox.getErlangMailBox();
-//            Construct message
-        OtpErlangObject[] msg = new OtpErlangObject[2];
+        // Construct message
+        OtpErlangObject[] msg = new OtpErlangObject[3];
         msg[0] = new OtpErlangAtom(ticker);
         msg[1] = new OtpErlangDouble(price);
+        msg[2] = new OtpErlangLong(System.currentTimeMillis());
+
         OtpErlangTuple tuple = new OtpErlangTuple(msg);
 
         System.out.println("Sending message to Erlang node: " + ticker + " " + price);
 
 //            Send message
-        mbox.send("message_receiver", ERLAN_NODE, tuple);
+        mbox.send("message_receiver", ERLANG_NODE, tuple);
         LOGGER.info(String.format("%s: %.2f", ticker, price));
     }
 

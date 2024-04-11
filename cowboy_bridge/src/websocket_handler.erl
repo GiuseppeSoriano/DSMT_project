@@ -13,6 +13,21 @@ websocket_init(State) ->
     erlang:send_after(1000, self(), tick),
     {ok, State3}.
 
+websocket_handle({text, <<"ping">>}, State) ->
+%%    io:format("Ping text received~n"),
+    {ok, State};
+websocket_handle({text, <<"subscribe_time">>}, State) ->
+    io:format("Subscribed to time updates~n"),
+    {ok, maps:put(subscribe_time, true, State)};
+websocket_handle({text, <<"unsubscribe_time">>}, State) ->
+    io:format("Unsubscribed from time updates~n"),
+    {ok, maps:put(subscribe_time, false, State)};
+websocket_handle({text, <<"subscribe_random">>}, State) ->
+    io:format("Subscribed to random number updates~n"),
+    {ok, maps:put(subscribe_random, true, State)};
+websocket_handle({text, <<"unsubscribe_random">>}, State) ->
+    io:format("Unsubscribed from random number updates~n"),
+    {ok, maps:put(subscribe_random, false, State)};
 websocket_handle({text, Msg}, State) ->
     case jsx:decode(Msg, [return_maps]) of
         #{<<"type">> := <<"subscribe_stock">>, <<"ticker">> := Ticker} ->
@@ -24,11 +39,10 @@ websocket_handle({text, Msg}, State) ->
             io:format("Unsubscribed from stock updates for ~p~n", [TickerStr]),
             {ok, maps:put(subscribe_stock, {false, undefined}, State)};
         _Other ->
+            io:format("Unknown message type: ~p~n", [Msg]),
             % Gestire altri tipi di messaggi qui
             {ok, State}
     end;
-websocket_handle({ping, Payload}, State) ->
-    {pong, Payload, State};
 websocket_handle(_, State) -> 
     {ok, State}.
 
@@ -68,11 +82,12 @@ send_stock(State) ->
     case maps:get(subscribe_stock, State, {false, undefined}) of
         {true, TickerStr} when is_list(TickerStr) ->
             Ticker = list_to_atom(TickerStr), %% Converti la stringa in atomo
+            TickerBinary = list_to_binary(TickerStr), 
             StockInfo = stock_storage:get_stock(Ticker),
-            io:format("Sending stock update for ~p: ~p~n", [Ticker, StockInfo]),
+            %% io:format("Sending stock update for ~p: ~p~n", [Ticker, StockInfo]),
             StockString = io_lib:format("~p", [StockInfo]),
             StockBinary = list_to_binary(StockString),
-            Msg = jsx:encode(#{<<"stock">> => StockBinary}),
+            Msg = jsx:encode(#{TickerBinary => StockBinary}),
             {[{text, Msg}], State};
         _ ->
             {[], State}
