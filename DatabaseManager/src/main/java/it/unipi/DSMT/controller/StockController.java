@@ -38,7 +38,7 @@ public class StockController extends HttpServlet {
 
         try {
             long timestamp = parseDate(dateString);
-            String stockHistory = stockService.getStockHistory(ticker, timestamp);
+            String stockHistory = stockService.getDailyStockHistory(ticker, timestamp);
             if (stockHistory == null) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"It works" + " " + ticker + " " + timestamp + " " +"\"}");

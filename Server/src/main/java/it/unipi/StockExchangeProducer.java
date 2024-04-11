@@ -29,7 +29,7 @@ public class StockExchangeProducer {
         OtpErlangObject[] msg = new OtpErlangObject[3];
         msg[0] = new OtpErlangAtom(ticker);
         msg[1] = new OtpErlangDouble(price);
-        msg[2] = new OtpErlangLong(System.currentTimeMillis());
+        msg[2] = new OtpErlangLong(System.currentTimeMillis()/1000L);
 
         OtpErlangTuple tuple = new OtpErlangTuple(msg);
 
