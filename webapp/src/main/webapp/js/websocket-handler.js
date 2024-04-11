@@ -1,81 +1,58 @@
 function subscribeToStock(ticker) {
-    const message = JSON.stringify({
-      type: "subscribe_stock",
-      ticker: ticker,
-    });
-    ws.send(message);
- }
+  const message = JSON.stringify({ type: "subscribe_stock", ticker: ticker });
+  ws.send(message);
+}
+
 function unsubscribeFromStock(ticker) {
-    const message = JSON.stringify({
-      type: "unsubscribe_stock",
-      ticker: ticker,
-    });
-    ws.send(message);
-  }
+  const message = JSON.stringify({ type: "unsubscribe_stock", ticker: ticker });
+  ws.send(message);
+}
 
 var ws = new WebSocket("ws://fedora:8081/websocket");
+var subscribedAAPL = false;
+var subscribedMSFT = false;
+var subscribedTSLA = false;
+var subscribedAMZN = false;
+var subscribedETHUSD = false;
+var subscribedBTCUSD = false;
 
-ws.onopen = function () {
+ws.onopen = function() {
     console.log("Connessione aperta");
-    setInterval(function () {
-      ws.send("ping");
-    }, 30000);
+    subscribeToStock('AAPL');
+    subscribeToStock('MSFT');
+    subscribeToStock('TSLA');
+    subscribeToStock('AMZN');
+    subscribeToStock('ETH/USD');
+    subscribeToStock('BTC/USD');
+    // Call here all the other subscribe methods you need for other tickers
+    setInterval(function() {
+        ws.send("ping");
+    }, 1000);
 };
-  ws.onmessage = function (event) {
+
+ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
     console.log("Messaggio ricevuto: ", data);
-    if (data.time) {
-      document.getElementById("time").textContent = data.time;
-    } else if (data.random) {
-      document.getElementById("random").textContent = data.random;
-    } else if (data.stock) {
-      document.getElementById("stock").textContent = data.stock;
+
+    if(data.AAPL) {
+        document.getElementById("AAPL").textContent = data.AAPL;
+    } else if(data.MSFT) {
+        document.getElementById("MSFT").textContent = data.MSFT;
+    } else if(data.TSLA) {
+        document.getElementById("TSLA").textContent = data.TSLA;
+    } else if(data.AMZN) {
+        document.getElementById("AMZN").textContent = data.AMZN;
+    }else if(data["ETH/USD"]) {
+        document.getElementById("ETH_USD").textContent = data["ETH/USD"];
+    }else if(data["BTC/USD"]) {
+        document.getElementById("BTC_USD").textContent = data["BTC/USD"];
     }
-  };
-  ws.onclose = function () {
+};
+
+ws.onclose = function() {
     console.log("Connessione chiusa");
-  };
-  ws.onerror = function (error) {
+};
+ws.onerror = function(error) {
     console.log("Errore: ", error);
-  };
+};
 
-  document
-    .getElementById("toggleTime")
-    .addEventListener("click", function () {
-      if (subscribedTime) {
-        ws.send("unsubscribe_time");
-        this.textContent = "Iscriviti agli Aggiornamenti dell'Orario";
-      } else {
-        ws.send("subscribe_time");
-        this.textContent = "Disiscriviti dagli Aggiornamenti dell'Orario";
-      }
-      subscribedTime = !subscribedTime;
-    });
-
-  document
-    .getElementById("toggleRandom")
-    .addEventListener("click", function () {
-      if (subscribedRandom) {
-        ws.send("unsubscribe_random");
-        this.textContent = "Iscriviti ai Numeri Casuali";
-      } else {
-        ws.send("subscribe_random");
-        this.textContent = "Disiscriviti dai Numeri Casuali";
-      }
-      subscribedRandom = !subscribedRandom;
-    });
-
-  document
-    .getElementById("toggleStock")
-    .addEventListener("click", function () {
-      if (subscribedStock) {
-        //ws.send("unsubscribe_stock");
-        unsubscribeFromStock("AAPL");
-        this.textContent = "Iscriviti agli Aggiornamenti delle Azioni";
-      } else {
-        //ws.send("subscribe_stock");
-        subscribeToStock("AAPL");
-        this.textContent = "Disiscriviti dagli Aggiornamenti delle Azioni";
-      }
-      subscribedStock = !subscribedStock;
-    });
