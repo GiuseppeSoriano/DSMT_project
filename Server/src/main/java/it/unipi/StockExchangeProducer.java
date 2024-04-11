@@ -55,7 +55,7 @@ public class StockExchangeProducer {
         send_data_to_erlang_node(420.72, "MSFT");
     }
 
-    @Schedule(hour = "*", minute = "*", second = "*/4", info = "Every 4 seconds timer")
+    @Schedule(hour = "*", minute = "*", second = "*/3", info = "Every 3 seconds timer")
     public void generate_AAPL_stock_data() {
         send_data_to_erlang_node(171.48, "AAPL");
     }

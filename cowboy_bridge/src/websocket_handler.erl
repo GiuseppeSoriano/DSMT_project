@@ -9,7 +9,7 @@ init(Req, _Opts) ->
 websocket_init(State) ->
     State1 = maps:put(subscribe_time, false, State),
     State2 = maps:put(subscribe_random, false, State1),
-    State3 = maps:put(subscribe_stock, {false, undefined}, State2),
+    State3 = maps:put(subscribe_stock, #{}, State2),
     erlang:send_after(1000, self(), tick),
     {ok, State3}.
 
@@ -33,14 +33,15 @@ websocket_handle({text, Msg}, State) ->
         #{<<"type">> := <<"subscribe_stock">>, <<"ticker">> := Ticker} ->
             TickerStr = binary_to_list(Ticker),
             io:format("Subscribed to stock updates for ~p~n", [TickerStr]),
-            {ok, maps:put(subscribe_stock, {true, TickerStr}, State)};
+            Stocks = maps:get(subscribe_stock, State, #{}),
+            {ok, maps:put(subscribe_stock, Stocks#{TickerStr => true}, State)};
         #{<<"type">> := <<"unsubscribe_stock">>, <<"ticker">> := Ticker} ->
             TickerStr = binary_to_list(Ticker),
             io:format("Unsubscribed from stock updates for ~p~n", [TickerStr]),
-            {ok, maps:put(subscribe_stock, {false, undefined}, State)};
+            Stocks = maps:get(subscribe_stock, State, #{}),
+            {ok, maps:put(subscribe_stock, maps:remove(TickerStr, Stocks), State)};
         _Other ->
             io:format("Unknown message type: ~p~n", [Msg]),
-            % Gestire altri tipi di messaggi qui
             {ok, State}
     end;
 websocket_handle(_, State) -> 
@@ -79,19 +80,42 @@ send_random_number(State) ->
     end.
 
 send_stock(State) ->
-    case maps:get(subscribe_stock, State, {false, undefined}) of
-        {true, TickerStr} when is_list(TickerStr) ->
-            Ticker = list_to_atom(TickerStr), %% Converti la stringa in atomo
-            TickerBinary = list_to_binary(TickerStr), 
-            StockInfo = stock_storage:get_stock(Ticker),
-            %% io:format("Sending stock update for ~p: ~p~n", [Ticker, StockInfo]),
-            StockString = io_lib:format("~p", [StockInfo]),
-            StockBinary = list_to_binary(StockString),
-            Msg = jsx:encode(#{TickerBinary => StockBinary}),
-            {[{text, Msg}], State};
-        _ ->
+    Stocks = maps:get(subscribe_stock, State, #{}),
+    case is_map(Stocks) of
+        true ->
+            Frames = lists:foldl(fun(TickerStr, Acc) ->
+                                     case stock_storage:get_stock(list_to_atom(TickerStr)) of
+                                         undefined ->
+                                             Acc; % Nessun aggiornamento se il ticker non è trovato
+                                         StockInfo ->
+                                             StockString = io_lib:format("~p", [StockInfo]),
+                                             StockBinary = list_to_binary(StockString),
+                                             Msg = jsx:encode(#{list_to_binary(TickerStr) => StockBinary}),
+                                             [{text, Msg} | Acc]
+                                     end
+                                 end, [], maps:keys(Stocks)),
+            {Frames, State};
+        false ->
+            % Se non è una mappa, non fare nulla o gestisci l'errore come preferisci
             {[], State}
     end.
+
+
+
+% send_stock(State) ->
+%     case maps:get(subscribe_stock, State, {false, undefined}) of
+%         {true, TickerStr} when is_list(TickerStr) ->
+%             Ticker = list_to_atom(TickerStr), %% Converti la stringa in atomo
+%             TickerBinary = list_to_binary(TickerStr), 
+%             StockInfo = stock_storage:get_stock(Ticker),
+%             %% io:format("Sending stock update for ~p: ~p~n", [Ticker, StockInfo]),
+%             StockString = io_lib:format("~p", [StockInfo]),
+%             StockBinary = list_to_binary(StockString),
+%             Msg = jsx:encode(#{TickerBinary => StockBinary}),
+%             {[{text, Msg}], State};
+%         _ ->
+%             {[], State}
+%     end.
 
 terminate(_Reason, _Req, _State) ->
     ok.

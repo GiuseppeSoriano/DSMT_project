@@ -31,8 +31,8 @@
 
         ws.onopen = function() {
             console.log("Connessione aperta");
-//            subscribeToStock('AAPL');
-//            subscribeToStock('MSFT');
+            subscribeToStock('AAPL');
+            subscribeToStock('MSFT');
             // Call here all the other subscribe methods you need for other tickers
             setInterval(function() {
                 ws.send("ping");
