@@ -23,18 +23,38 @@ handle_cast({update_stock, Ticker, Price, Timestamp}, State) ->
     %% Determina se aggiornare lo stato in base al timestamp
     NewState = case maps:find(Ticker, State) of
                    {ok, {_, StoredTimestamp}} when Timestamp > StoredTimestamp ->
-                       %% Il nuovo timestamp è maggiore, quindi aggiorna
-                       maps:put(Ticker, {Price, Timestamp}, State);
+                        %% Il nuovo timestamp è maggiore, quindi aggiorna
+                        io:format("Updating ~p with value ~p~n", [Ticker, Price]),
+                        maps:put(Ticker, {Price, Timestamp}, State);
                    error ->
-                       %% Ticker non presente, quindi inserisci nuovo valore
-                       maps:put(Ticker, {Price, Timestamp}, State);
+                        %% Ticker non presente, quindi inserisci nuovo valore
+                        io:format("Adding ~p with value ~p~n", [Ticker, Price]),
+                        maps:put(Ticker, {Price, Timestamp}, State);
                    _ ->
                        %% Il timestamp esistente è maggiore o uguale, non aggiornare
+                          io:format("Timestamp greater or equal~n"),
                        State
                end,
 
+    Response = send_http_request(Ticker, Price, Timestamp),
+    case Response of
+        {ok, {{_, 201, _}, _, _}} ->
+            io:format("Data saved correctly for ~p~n", [Ticker]);
+        _ ->
+            io:format("Error in saving data for ~p. Response: ~p~n", [Ticker, Response])
+    end,
+
     {noreply, NewState}.
 
+send_http_request(Ticker, Price, Timestamp) ->
+    io:format("Sending HTTP request, Ticker: ~p, Price: ~p, Timestamp: ~p~n", [Ticker, Price, Timestamp]),
+    JsonBody = jsx:encode([{<<"ticker">>, list_to_binary(Ticker)}, {<<"price">>, Price}, {<<"timestamp">>, Timestamp}]),
+    Headers = [{"Content-Type", "application/json"}],
+    Url = "http://localhost:8080/DatabaseManager/stock-api",
+
+    io:format("Sending POST request to ~p with body ~p~n", [Url, JsonBody]),
+    %% Assicurarsi che inets sia avviato con application:start(inets).
+    httpc:request(post, {Url, Headers, "application/json", JsonBody}, [], []).
 
 
 handle_call({get_stock, Ticker}, _From, State) ->
