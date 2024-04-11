@@ -1,22 +1,16 @@
-package it.unipi.aide.saa.utils;
+package it.unipi.aide.webapp;
 
-import com.opencsv.CSVReader;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
 
 public class Util {
 
@@ -26,7 +20,7 @@ public class Util {
      * @param url
      * @return JSONObject
      */
-    public static JSONObject getJSONDataFromExternalAPI(String url) {
+    public static JSONArray getJSONDataFromExternalAPI(String url) {
 
         URL obj = null;
         try {
@@ -48,19 +42,18 @@ public class Util {
             in.close();
 
             //Read JSON response and print
-            return new JSONObject(response.toString());
+            return new JSONArray(response.toString());
 
         } catch (MalformedURLException e) {
             System.out.println(e);
         } catch (ProtocolException e) {
-            return new JSONObject();
+            return new JSONArray();
         } catch (IOException e) {
             System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
         }
-        return new JSONObject();
+        return new JSONArray();
     }
-
 
 }
