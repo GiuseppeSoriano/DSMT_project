@@ -14,7 +14,7 @@ public class StockExchangeProducer {
     private static final Logger LOGGER = Logger.getLogger(StockExchangeProducer.class.getName());
 
 //    private static final String ERLANG_NODE="cowboy_bridge@192.168.1.6";
-    private static final String ERLANG_NODE = "cowboy_bridge@fedora";
+    private static final String ERLANG_NODE = "cowboy_bridge@10.2.1.95";
 
     private static double generateStockData(double basePrice, double fluctuationRange) {
         double randomFluctuation = Math.random() * fluctuationRange * 2 - fluctuationRange;
