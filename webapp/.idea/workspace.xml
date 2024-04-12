@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec8677d9-4a77-4725-a32b-66c945b846c2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../DatabaseManager/src/main/java/it/unipi/DSMT/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DatabaseManager/src/main/java/it/unipi/DSMT/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DatabaseManager/src/main/java/it/unipi/DSMT/dao/redis/StockDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DatabaseManager/src/main/java/it/unipi/DSMT/dao/redis/StockDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/aide/webapp/StockData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/aide/webapp/StockData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/aide/webapp/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/aide/webapp/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +273,7 @@
       <workItem from="1712867881851" duration="257000" />
       <workItem from="1712868247057" duration="578000" />
       <workItem from="1712868865228" duration="426000" />
-      <workItem from="1712869324812" duration="1781000" />
+      <workItem from="1712869324812" duration="2414000" />
     </task>
     <servers />
   </component>
