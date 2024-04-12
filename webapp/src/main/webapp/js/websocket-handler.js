@@ -8,7 +8,7 @@ function unsubscribeFromStock(ticker) {
   ws.send(message);
 }
 
-var ws = new WebSocket("ws://fedora:8081/websocket");
+var ws = new WebSocket("ws://10.2.1.95:8081/websocket");
 var subscribedAAPL = false;
 var subscribedMSFT = false;
 var subscribedTSLA = false;

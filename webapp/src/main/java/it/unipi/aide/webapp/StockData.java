@@ -13,7 +13,7 @@ public class StockData {
     private final double low;
     private final double close;
 
-    private static String DATABASE_URL="http://localhost:8080/DatabaseManager-1.0-SNAPSHOT/stock-api?date=1&ticker=";
+    private static String DATABASE_URL="http://10.2.1.73:8080/database/stock-api?date=1&ticker=";
 
     public StockData(String date, double open, double high, double low, double close) {
         this.date = date;
