@@ -12,5 +12,5 @@ stop(_State) ->
 
 %% internal functions
 
-%% rebar3 shell --name cowboy_bridge@192.168.1.6 --setcookie mycookie
+%% rebar3 shell --name cowboy_bridge@10.2.1.95 --setcookie mycookie
 %% rebar3 shell --name cowboy_bridge@fedora --setcookie mycookie

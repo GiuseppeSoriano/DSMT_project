@@ -48,7 +48,8 @@ handle_cast({update_stock, Ticker, Price, Timestamp}, State) ->
 
 send_http_request(Ticker, Price, Timestamp) ->
     io:format("Sending HTTP request, Ticker: ~p, Price: ~p, Timestamp: ~p~n", [Ticker, Price, Timestamp]),
-    JsonBody = jsx:encode([{<<"ticker">>, list_to_binary(Ticker)}, {<<"price">>, Price}, {<<"timestamp">>, Timestamp}]),
+    % JsonBody = jsx:encode([{<<"ticker">>, list_to_binary(Ticker)}, {<<"price">>, Price}, {<<"timestamp">>, Timestamp}]),
+    JsonBody = jsx:encode([{<<"ticker">>, Ticker}, {<<"price">>, Price}, {<<"timestamp">>, Timestamp}]),
     Headers = [{"Content-Type", "application/json"}],
     Url = "http://localhost:8080/DatabaseManager/stock-api",
 
