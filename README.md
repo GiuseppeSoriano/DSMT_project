@@ -73,12 +73,13 @@ This section describes how to interact with the system components deployed acros
 `Database Manager`: This component is deployed on GlassFish and manages interactions with the stock database.
 
 `Redis Database`: Installed on this node to handle caching and session storage to enhance performance.
-Accessing the Database Manager:
-To query stock information, such as Tesla's stock on a specific date, make a GET request to:
+
+**Accessing the Database Manager:**
+To query stock information starting from a specific date, such as Tesla's stock performance from a given date, make a GET request to:
 ``` bash
 http://10.2.1.73:8080/database/stock-api?ticker=TSLA&date=1
 ```
-This URL fetches stock data from the Database Manager by querying the Redis cache or the underlying database if needed.
+This URL fetches stock data for the specified ticker (in this case, TSLA) from the Database Manager, querying data recorded from the specified date onward. Ensure that the date parameter is provided in epoch seconds format.
 
 ### 2. Node 10.2.1.94
 `Data Producer`: Deployed on GlassFish, this component is responsible for producing and sending data to other system components. It acts as a middleware that processes data requests and manages data flow within the network.
